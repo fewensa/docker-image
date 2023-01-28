@@ -12,6 +12,8 @@ jobs:
   build-docker-image:
     name: Build docker image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@v2
 
