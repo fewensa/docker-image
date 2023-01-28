@@ -33,5 +33,5 @@ jobs:
           push: true
           context: images/node-liveness-probe
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/node-liveness-probe:sha-${{ env.SHA }}
-          build-args:
-            - NODE_LIVENESS_PROBE_VERSION=v0.5.4
+          build-args: |
+            NODE_LIVENESS_PROBE_VERSION=v0.5.4
