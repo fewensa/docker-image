@@ -25,11 +25,6 @@ RUN \
   echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
-RUN echo 'export PATH=$PATH:/root/.cargo/bin' >> /etc/profile.d/env.sh && \
-    echo 'export NVM_DIR="/root/.nvm"' >> /etc/profile.d/env.sh && \
-    echo 'export JAVA_HOME=/opt/jdk' >> /etc/profile.d/env.sh && \
-    echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/profile.d/env.sh
-
 ### rust
 #RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
 #    echo 'export PATH=$PATH:/root/.cargo/bin' >> /etc/profile.d/env.sh && \
