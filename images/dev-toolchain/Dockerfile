@@ -35,7 +35,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
 RUN curl -L -o /tmp/flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz && \
     tar -xf /tmp/flutter.tar.xz -C /opt && \
     git config --global --add safe.directory /opt/flutter && \
-    echo 'export PATH=$PATH:/opt/flutter/bin' >> /etc/profile.d/env.sh && \
+    echo 'export PATH=$PATH:/opt/flutter/bin' >> /etc/profile.d/env.sh
 
 ## nodejs
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSIONNVM_VERSION/install.sh | bash && \
