@@ -7,7 +7,7 @@ RUN \
   apt update && \
   apt install -y \
     openssh-server curl wget \
-    vim nano \
+    vim nano git \
     && \
   mkdir -p /run/sshd && \
   echo "root:${HOST_PASSWORD}" | chpasswd && \
