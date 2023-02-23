@@ -10,7 +10,7 @@ RUN \
     vim nano \
     && \
   mkdir -p /run/sshd && \
-  echo "root:${HOST_PASSWORD}" | chpasswd && \
+  echo "root:passwd" | chpasswd && \
   echo "Port 22" >> /etc/ssh/sshd_config && \
   echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
