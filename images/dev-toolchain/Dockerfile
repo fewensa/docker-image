@@ -12,7 +12,7 @@ SHELL ["/bin/bash", "-c"]
 RUN \
   apt update -y && \
   apt install --no-install-recommends -y \
-    openssh-server ca-certificates curl  \
+    openssh-server ca-certificates curl ncdu \
     python3-pip wget vim nano git xz-utils zstd zip unzip \
     build-essential \
     clang make gcc g++ protobuf-compiler make \
