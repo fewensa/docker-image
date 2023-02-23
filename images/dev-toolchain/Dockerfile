@@ -38,7 +38,7 @@ RUN curl -L -o /tmp/flutter.tar.xz https://storage.googleapis.com/flutter_infra_
     echo 'export PATH=$PATH:/opt/flutter/bin' >> /etc/profile.d/env.sh
 
 ## nodejs
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSIONNVM_VERSION/install.sh | bash && \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash && \
     echo 'export NVM_DIR="/root/.nvm"' >> /etc/profile.d/env.sh && \
     source /etc/profile.d/env.sh && \
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
