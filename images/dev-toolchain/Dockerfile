@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ARG PASSWORD=password
+ARG HOST_PASSWORD=password
 
 ## basic 
 RUN \
@@ -10,7 +10,7 @@ RUN \
     vim nano \
     && \
   mkdir -p /run/sshd && \
-  echo "root:${PASSWORD}" | chpasswd && \
+  echo "root:${HOST_PASSWORD}" | chpasswd && \
   echo "Port 22" >> /etc/ssh/sshd_config && \
   echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config

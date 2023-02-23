@@ -30,6 +30,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ${{ env.DOCKER_REGISTRY }}
 
+      - name: Dev toolchain
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: images/dev-toolchain
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/dev-toolchain:sha-${{ env.SHA }}
+          build-args: |
+            HOST_PASSWORD=${{ secrets.TOOLCHAIN_PASSWORD_HOST }}
+
       - name: Node liveness probe
         uses: docker/build-push-action@v3
         with:
@@ -38,12 +47,3 @@ jobs:
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/node-liveness-probe:sha-${{ env.SHA }}
           build-args: |
             NODE_LIVENESS_PROBE_VERSION=v0.5.4
-
-      - name: Dev toolchain
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          context: images/dev-toolchain
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/dev-toolchain:sha-${{ env.SHA }}
-          build-args: |
-            PASSWORD=${{ secrets.TOOLCHAIN_PASSWORD_HOST }}
