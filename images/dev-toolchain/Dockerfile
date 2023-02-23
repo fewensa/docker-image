@@ -6,6 +6,8 @@ ARG NVM_VERSION=0.39.3
 ARG NODE_VERSION=18.14.2
 ARG JDK_VERSION=11.0.18
 
+SHELL ["/bin/bash", "-c"]
+
 ## basic
 RUN \
   apt update -y && \
