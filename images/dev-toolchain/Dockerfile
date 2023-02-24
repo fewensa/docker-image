@@ -16,6 +16,7 @@ RUN \
     python3-pip wget vim nano git xz-utils zstd zip unzip \
     build-essential libssl-dev pkg-config \
     clang make gcc g++ protobuf-compiler make \
+    ninja-build libgtk-3-dev \
     && \
   pip3 install --upgrade pip && \
   pip3 install cmake --upgrade && \
