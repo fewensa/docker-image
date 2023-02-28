@@ -5,6 +5,7 @@ ARG FLUTTER_VERSION=3.3.0
 ARG NVM_VERSION=0.39.3
 ARG NODE_VERSION=18.14.2
 #ARG JDK_VERSION=11.0.18
+ARG DOCKER_COMPOSE_VERSION=2.16.0
 
 SHELL ["/bin/bash", "-c"]
 
@@ -19,6 +20,9 @@ RUN \
     clang make gcc g++ protobuf-compiler make \
     ninja-build libgtk-3-dev \
     && \
+  curl -fsSL https://get.docker.com | sh && \
+  curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
+  chmod +x /usr/local/bin/docker-compose && \
   pip3 install --upgrade pip && \
   pip3 install cmake --upgrade && \
   mkdir -p /run/sshd && \
