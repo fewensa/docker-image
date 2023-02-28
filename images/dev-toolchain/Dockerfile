@@ -9,6 +9,8 @@ ARG DOCKER_COMPOSE_VERSION=2.16.0
 
 SHELL ["/bin/bash", "-c"]
 
+COPY entrypoint.sh /
+
 ## basic
 RUN \
   apt update -y && \
@@ -65,5 +67,5 @@ RUN \
 
 EXPOSE 222
 
-CMD ["/usr/sbin/sshd", "-D"]
+ENTRYPOINT "/entrypoint.sh"
 
