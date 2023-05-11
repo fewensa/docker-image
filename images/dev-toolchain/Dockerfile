@@ -13,15 +13,18 @@ COPY entrypoint.sh /
 
 ## basic
 RUN \
-  apt update -y && \
-  apt install --no-install-recommends -y \
+  apt-get update -y && \
+  apt-get install --no-install-recommends -y \
     openssh-server ca-certificates curl ncdu \
     python3-pip wget vim nano git xz-utils zstd zip unzip \
     htop \
     build-essential libssl-dev pkg-config \
     clang make gcc g++ protobuf-compiler make \
     ninja-build libgtk-3-dev \
+    python2 python3-pip python3-dev \
     && \
+  ln -s /usr/bin/python3 /usr/bin/python && \
+  pip3 --no-cache-dir install --upgrade pip && \
   curl -fsSL https://get.docker.com | sh && \
   curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
   chmod +x /usr/local/bin/docker-compose && \
