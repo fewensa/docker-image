@@ -46,7 +46,7 @@ jobs:
           context: images/node-liveness-probe
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/node-liveness-probe:sha-${{ env.SHA }}
           build-args: |
-            NODE_LIVENESS_PROBE_VERSION=v0.5.4
+            NODE_LIVENESS_PROBE_VERSION=v0.6.1
             FLUTTER_VERSION=3.3.0
             NVM_VERSION=0.39.3
             NODE_VERSION=18.14.2
