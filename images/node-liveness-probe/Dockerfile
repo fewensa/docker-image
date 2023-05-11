@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:bullseye
 
 ARG NODE_LIVENESS_PROBE_VERSION=v0.5.4
 
