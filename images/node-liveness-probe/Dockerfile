@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-ARG NODE_LIVENESS_PROBE_VERSION=v0.5.4
+ARG NODE_LIVENESS_PROBE_VERSION='v0.6.1'
 
 RUN set -xe && \
   apt update && \
