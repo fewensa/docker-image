@@ -68,4 +68,4 @@ jobs:
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/terraform:sha-${{ env.SHA }}
           build-args: |
             TERRAFORM_VERSION=1.4.6
-            TERRAFORM_BACKEND_GIT_VERSION=v0.1.4
+            TERRAFORM_BACKEND_GIT_VERSION=v0.0.17
