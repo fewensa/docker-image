@@ -20,6 +20,7 @@ jobs:
         package:
           - dev-toolchain
           - node-liveness-probe
+          - terraform
     steps:
       - uses: actions/checkout@v2
 
@@ -57,3 +58,14 @@ jobs:
             FLUTTER_VERSION=3.3.0
             NVM_VERSION=0.39.3
             NODE_VERSION=18.14.2
+
+      - name: Terraform
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'terraform' }}
+        with:
+          push: true
+          context: images/terraform
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/terraform:sha-${{ env.SHA }}
+          build-args: |
+            TERRAFORM_VERSION=1.4.6
+            TERRAFORM_BACKEND_GIT_VERSION=v0.1.4
