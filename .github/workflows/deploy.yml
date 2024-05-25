@@ -21,6 +21,7 @@ jobs:
           - dev-toolchain
           - node-liveness-probe
           - terraform
+          - artelad
     steps:
       - uses: actions/checkout@v2
 
@@ -69,3 +70,11 @@ jobs:
           build-args: |
             TERRAFORM_VERSION=1.4.6
             TERRAFORM_BACKEND_GIT_VERSION=v0.1.4
+
+      - name: Artelad
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'artelad' }}
+        with:
+          push: true
+          context: images/artelad
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/artelad:sha-${{ env.SHA }}
