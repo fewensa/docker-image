@@ -7,4 +7,4 @@ RUN apt-get update -y \
   && mv ./artelad /usr/local/bin/ \
   && rm -rf *.gz 
 
-CMD ["/usr/local/bin/artelad"]
+ENTRYPOINT ["/usr/local/bin/artelad"]
