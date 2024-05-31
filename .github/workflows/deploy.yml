@@ -86,5 +86,5 @@ jobs:
         with:
           push: true
           context: images/fuel
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/artelad:sha-${{ env.SHA }}
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/fuel:sha-${{ env.SHA }}
 
