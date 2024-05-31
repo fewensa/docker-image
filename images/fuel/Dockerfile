@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 RUN apt-get update -y \
-  && apt-get install curl git \
+  && apt-get install -y curl git \
   && curl https://install.fuel.network | sh
 
 ENV PATH="${PATH}:/root/.fuelup/bin"
