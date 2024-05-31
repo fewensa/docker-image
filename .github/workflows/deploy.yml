@@ -22,6 +22,7 @@ jobs:
           - node-liveness-probe
           - terraform
           - artelad
+          - fuel
     steps:
       - uses: actions/checkout@v2
 
@@ -78,3 +79,12 @@ jobs:
           push: true
           context: images/artelad
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/artelad:sha-${{ env.SHA }}
+
+      - name: Fuel
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'fuel' }}
+        with:
+          push: true
+          context: images/fuel
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/artelad:sha-${{ env.SHA }}
+
