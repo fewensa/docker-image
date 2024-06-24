@@ -23,6 +23,7 @@ jobs:
           - terraform
           - artelad
           - fuel
+          - nubit
     steps:
       - uses: actions/checkout@v2
 
@@ -87,4 +88,13 @@ jobs:
           push: true
           context: images/fuel
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/fuel:sha-${{ env.SHA }}
+
+      - name: Nubit
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'nubit' }}
+        with:
+          push: true
+          context: images/nubit
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/nubit:sha-${{ env.SHA }}
+
 
