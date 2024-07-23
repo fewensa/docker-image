@@ -24,6 +24,7 @@ jobs:
           - artelad
           - fuel
           - nubit
+          - harmonytools
     steps:
       - uses: actions/checkout@v2
 
@@ -96,5 +97,13 @@ jobs:
           push: true
           context: images/nubit
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/nubit:sha-${{ env.SHA }}
+
+      - name: Harmonytools
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'harmonytools' }}
+        with:
+          push: true
+          context: images/harmonytools
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/harmonytools:sha-${{ env.SHA }}
 
 
