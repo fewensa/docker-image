@@ -11,6 +11,7 @@ SHELL ["/bin/bash", "-c"]
 
 COPY entrypoint.sh /
 
+#  echo "Port 222" >> /etc/ssh/sshd_config && \
 ## basic
 RUN \
   apt-get update -y && \
@@ -32,7 +33,6 @@ RUN \
   pip3 install cmake --upgrade && \
   mkdir -p /run/sshd && \
   echo "root:${HOST_PASSWORD}" | chpasswd && \
-  echo "Port 222" >> /etc/ssh/sshd_config && \
   echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
@@ -68,7 +68,7 @@ RUN \
 ### clean
 #RUN rm -rf /tmp/*
 
-EXPOSE 222
+#EXPOSE 222
 
 ENTRYPOINT "/entrypoint.sh"
 
