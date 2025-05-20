@@ -10,15 +10,15 @@ ARG S6_OVERLAY_VERSION=3.2.0.2
 
 SHELL ["/bin/bash", "-c"]
 
-# ENV USER=ubuntu \
-#     DOCKERD_ROOTLESS_ROOT=/home/ubuntu/.local/share/docker
-
+## unminimize
 RUN yes | unminimize
 
+## install dependencies
 RUN \
   apt-get update -y \
   && apt-get install --no-install-recommends -y \
-    openssh-server ca-certificates curl ncdu \
+    curl ca-certificates  \
+    openssh-server ncdu \
     python3-pip wget vim nano git xz-utils zstd zip unzip \
     htop \
     build-essential libssl-dev pkg-config \
@@ -26,30 +26,41 @@ RUN \
     ninja-build libgtk-3-dev \
     python3-pip python3-dev
 
+## link python
 RUN \
   ln -s /usr/bin/python3 /usr/bin/python
 
 
-# ENV SKIP_IPTABLES=1
-
+## docker
 RUN curl -fsSL https://get.docker.com | sh && \
   curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
   chmod +x /usr/local/bin/docker-compose
 
+
+## ssh config
 RUN \
   mkdir -p /run/sshd && \
   echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 
+## s6-overlay
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
-
 COPY services.d /etc/services.d
+
+# vscode
+
+RUN \
+  curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
+  && mkdir -p /opt/vscode \
+  && tar -xzf /tmp/code.tar.gz -C /opt/vscode \
+  && rm -rf /tmp/code.tar.gz \
+
 
 # RUN \
 #   apt-get install --no-install-recommends -y sudo \
@@ -94,6 +105,8 @@ COPY services.d /etc/services.d
 #EXPOSE 222
 
 # ENTRYPOINT "/entrypoint.sh"
+
+ENV VSCODE_TUNNEL_NAME="pow-dev"
 
 ENTRYPOINT ["/init"]
 

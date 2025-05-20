@@ -1,0 +1,5 @@
+#!/command/execlineb -P
+#
+
+s6-envdir /var/run/s6/container_environment
+/opt/vscode/code tunnel --name=${VSCODE_TUNNEL_NAME}
