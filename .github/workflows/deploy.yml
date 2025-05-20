@@ -19,12 +19,12 @@ jobs:
       matrix:
         package:
           - dev-toolchain
-          - node-liveness-probe
-          - terraform
-          - artelad
-          - fuel
-          - nubit
-          - harmonytools
+          # - node-liveness-probe
+          # - terraform
+          # - artelad
+          # - fuel
+          # - nubit
+          # - harmonytools
     steps:
       - uses: actions/checkout@v2
 

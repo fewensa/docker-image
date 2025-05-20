@@ -1,40 +1,63 @@
 FROM ubuntu:24.04
 
-ARG HOST_PASSWORD=password
+# ARG HOST_PASSWORD=password
 ARG FLUTTER_VERSION=3.29.3
 ARG NVM_VERSION=0.40.3
 ARG NODE_VERSION=22.15.1
 ARG DOCKER_COMPOSE_VERSION=2.36.1
+ARG S6_OVERLAY_VERSION=3.2.0.2
 #ARG JDK_VERSION=11.0.18
 
 SHELL ["/bin/bash", "-c"]
 
-COPY entrypoint.sh /
+# ENV USER=ubuntu \
+#     DOCKERD_ROOTLESS_ROOT=/home/ubuntu/.local/share/docker
 
-#  echo "Port 222" >> /etc/ssh/sshd_config && \
-## basic
+RUN yes | unminimize
+
 RUN \
-  apt-get update -y && \
-  apt-get install --no-install-recommends -y \
+  apt-get update -y \
+  && apt-get install --no-install-recommends -y \
     openssh-server ca-certificates curl ncdu \
     python3-pip wget vim nano git xz-utils zstd zip unzip \
     htop \
     build-essential libssl-dev pkg-config \
     clang make gcc g++ protobuf-compiler make \
     ninja-build libgtk-3-dev \
-    python2 python3-pip python3-dev \
-    && \
-  ln -s /usr/bin/python3 /usr/bin/python && \
-  pip3 --no-cache-dir install --upgrade pip && \
-  curl -fsSL https://get.docker.com | sh && \
+    python3-pip python3-dev
+
+RUN \
+  ln -s /usr/bin/python3 /usr/bin/python
+
+
+# ENV SKIP_IPTABLES=1
+
+RUN curl -fsSL https://get.docker.com | sh && \
   curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
-  chmod +x /usr/local/bin/docker-compose && \
-  pip3 install --upgrade pip && \
-  pip3 install cmake --upgrade && \
+  chmod +x /usr/local/bin/docker-compose
+
+RUN \
   mkdir -p /run/sshd && \
-  echo "root:${HOST_PASSWORD}" | chpasswd && \
-  echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config && \
+  echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+
+
+
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
+
+
+COPY services.d /etc/services.d
+
+# RUN \
+#   apt-get install --no-install-recommends -y sudo \
+#   usermod -aG sudo ubuntu && \
+#   echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
+
+# USER ubuntu
+
 
 ### rust
 #RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
@@ -70,5 +93,7 @@ RUN \
 
 #EXPOSE 222
 
-ENTRYPOINT "/entrypoint.sh"
+# ENTRYPOINT "/entrypoint.sh"
+
+ENTRYPOINT ["/init"]
 
