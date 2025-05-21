@@ -44,6 +44,16 @@ RUN \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 
+# vscode
+
+RUN \
+  curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
+  && mkdir -p /opt/vscode \
+  && tar -xzf /tmp/code.tar.gz -C /opt/vscode \
+  && rm -rf /tmp/code.tar.gz \
+
+
+
 ## s6-overlay
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
@@ -52,14 +62,6 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLA
 RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
 COPY services.d /etc/services.d
-
-# vscode
-
-RUN \
-  curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
-  && mkdir -p /opt/vscode \
-  && tar -xzf /tmp/code.tar.gz -C /opt/vscode \
-  && rm -rf /tmp/code.tar.gz \
 
 
 # RUN \
