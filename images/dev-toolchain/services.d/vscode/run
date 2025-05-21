@@ -2,4 +2,4 @@
 #
 
 s6-envdir /var/run/s6/container_environment
-/usr/local/bin/code tunnel --name=${VSCODE_TUNNEL_NAME}
+/usr/local/bin/code tunnel --accept-server-license-terms --name=${VSCODE_TUNNEL_NAME}
