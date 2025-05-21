@@ -61,7 +61,7 @@ RUN \
   echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 
-# vscode
+## vscode
 
 RUN \
   curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
@@ -69,6 +69,8 @@ RUN \
   && rm -rf /tmp/code.tar.gz \
 
 
+## workdir
+RUN mkdir /code
 WORKDIR /code
 
 # RUN \
