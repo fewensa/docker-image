@@ -63,6 +63,8 @@ RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
 COPY services.d /etc/services.d
 
+WORKDIR /code
+
 
 # RUN \
 #   apt-get install --no-install-recommends -y sudo \
