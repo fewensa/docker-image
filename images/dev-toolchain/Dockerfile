@@ -31,6 +31,23 @@ RUN \
   ln -s /usr/bin/python3 /usr/bin/python
 
 
+## s6-overlay
+
+# RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" -o /tmp/s6-overlay-noarch.tar.xz || \
+#     (echo "Failed to download s6-overlay tarball!" && exit 1)
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+RUN [ -f /tmp/s6-overlay-noarch.tar.xz ] || (echo "Failed to download s6-overlay tarball!" && exit 1)
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+
+# RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz" -o /tmp/s6-overlay-x86_64.tar.xz || \
+#     (echo "Failed to download s6-overlay tarball!" && exit 1)
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
+RUN [ -f /tmp/s6-overlay-x86_64.tar.xz ] || (echo "Failed to download s6-overlay tarball!" && exit 1)
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
+
+COPY services.d /etc/services.d
+
+
 ## docker
 RUN curl -fsSL https://get.docker.com | sh && \
   curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
@@ -54,24 +71,6 @@ RUN \
 
 
 
-## s6-overlay
-
-RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" -o /tmp/s6-overlay-noarch.tar.xz || \
-    (echo "Failed to download s6-overlay tarball!" && exit 1)
-# ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
-# RUN [ -f /tmp/s6-overlay-noarch.tar.xz ] || (echo "Failed to download s6-overlay tarball!" && exit 1)
-RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
-
-RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz" -o /tmp/s6-overlay-x86_64.tar.xz || \
-    (echo "Failed to download s6-overlay tarball!" && exit 1)
-# ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
-# RUN [ -f /tmp/s6-overlay-x86_64.tar.xz ] || (echo "Failed to download s6-overlay tarball!" && exit 1)
-RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
-
-
-COPY services.d /etc/services.d
-
-WORKDIR /code
 
 # RUN \
 #   apt-get install --no-install-recommends -y sudo \
