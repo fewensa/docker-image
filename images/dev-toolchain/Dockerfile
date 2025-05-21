@@ -5,7 +5,7 @@ ARG FLUTTER_VERSION=3.29.3
 ARG NVM_VERSION=0.40.3
 ARG NODE_VERSION=22.15.1
 ARG DOCKER_COMPOSE_VERSION=2.36.1
-ARG S6_OVERLAY_VERSION=3.2.0.2
+ARG S6_OVERLAY_VERSION=3.2.1.0
 #ARG JDK_VERSION=11.0.18
 
 SHELL ["/bin/bash", "-c"]
@@ -17,9 +17,9 @@ RUN yes | unminimize
 RUN \
   apt-get update -y \
   && apt-get install --no-install-recommends -y \
-    curl ca-certificates  \
+    curl ca-certificates xz-utils zstd zip unzip \
     openssh-server ncdu \
-    python3-pip wget vim nano git xz-utils zstd zip unzip \
+    python3-pip wget vim nano git \
     htop \
     build-essential libssl-dev pkg-config \
     clang make gcc g++ protobuf-compiler make \
