@@ -117,7 +117,7 @@ WORKDIR /code
 
 # ENTRYPOINT "/entrypoint.sh"
 
-ENV VSCODE_TUNNEL_NAME="pow-dev"
+# ENV VSCODE_TUNNEL_NAME="pow-dev"
 
 ENTRYPOINT ["/init"]
 
