@@ -54,9 +54,16 @@ RUN \
   echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
   echo "PermitRootLogin prohibit-password" >> /etc/ssh/sshd_config
 
+## init-scripts
+COPY init-scripts /init-scripts
 
+RUN \
+  bash -f /init-scripts/init-ssh.sh \
+  && rm -rf /init-scripts
+
+## workdir
 RUN mkdir /data
 WORKDIR /data
 
-
+## entrypoint
 ENTRYPOINT ["/init"]
