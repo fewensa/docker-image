@@ -15,7 +15,8 @@ RUN \
   && apt-get install --no-install-recommends -y \
     curl ca-certificates xz-utils zstd zip unzip \
     openssh-server \
-    wget vim nano git htop
+    wget vim nano git htop \
+    sudo
 
 
 ## s6-overlay
