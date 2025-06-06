@@ -16,7 +16,8 @@ RUN \
     curl ca-certificates xz-utils zstd zip unzip \
     openssh-server \
     wget vim nano git htop \
-    sudo
+    sudo \
+    mtr iperf3 nload ncdu gnupg jq
 
 
 ## s6-overlay
