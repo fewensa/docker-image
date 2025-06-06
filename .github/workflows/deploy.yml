@@ -19,7 +19,6 @@ jobs:
       matrix:
         package:
           - appbox
-          - corsanywhere
           - dev-toolchain
           # - node-liveness-probe
           # - terraform
@@ -49,14 +48,6 @@ jobs:
           push: true
           context: images/appbox
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/appbox:sha-${{ env.SHA }}
-
-      - name: Corsanywhere
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'corsanywhere' }}
-        with:
-          push: true
-          context: images/corsanywhere
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/corsanywhere:sha-${{ env.SHA }}
 
       - name: Dev toolchain
         uses: docker/build-push-action@v3
