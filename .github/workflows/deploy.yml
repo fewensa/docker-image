@@ -18,6 +18,7 @@ jobs:
     strategy:
       matrix:
         package:
+          - appbox
           - dev-toolchain
           # - node-liveness-probe
           # - terraform
@@ -39,6 +40,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ${{ env.DOCKER_REGISTRY }}
+
+      - name: Appbox
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'appbox' }}
+        with:
+          push: true
+          context: images/appbox
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/appbox:sha-${{ env.SHA }}
 
       - name: Dev toolchain
         uses: docker/build-push-action@v3

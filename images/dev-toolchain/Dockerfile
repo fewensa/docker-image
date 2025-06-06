@@ -19,8 +19,7 @@ RUN \
   && apt-get install --no-install-recommends -y \
     curl ca-certificates xz-utils zstd zip unzip \
     openssh-server ncdu \
-    python3-pip wget vim nano git \
-    htop \
+    wget vim nano git htop \
     build-essential libssl-dev pkg-config \
     clang make gcc g++ protobuf-compiler make \
     ninja-build libgtk-3-dev \
@@ -58,7 +57,7 @@ RUN curl -fsSL https://get.docker.com | sh && \
 RUN \
   mkdir -p /run/sshd && \
   echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
-  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+  echo "PermitRootLogin prohibit-password" >> /etc/ssh/sshd_config
 
 
 ## vscode
