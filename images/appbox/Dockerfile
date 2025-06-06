@@ -15,9 +15,14 @@ RUN \
   && apt-get install --no-install-recommends -y \
     curl ca-certificates xz-utils zstd zip unzip \
     openssh-server \
+    python3-pip python3-dev \
     wget vim nano git htop \
     sudo \
     mtr iperf3 nload ncdu gnupg jq
+
+## link python
+RUN \
+  ln -s /usr/bin/python3 /usr/bin/python
 
 
 ## s6-overlay
