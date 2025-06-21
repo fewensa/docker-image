@@ -14,6 +14,8 @@ fewensa
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAneSmM1VlnYEI2iLApYFQmzLt8hxAT9r2UgbgW/JdnC fewensa@mook
 ansible
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINFvM1upegm161AR3yKzLTx90b6e0UHtWdeJEBDfYRP+ ansible@anxio
+dokmana
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGMDqrKslP5bqf9NNfoQCvzKpnXFQ8FvdqIMI8EydPe dokploy
 ---end
 '
 
