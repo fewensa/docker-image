@@ -18,7 +18,8 @@ RUN \
     python3-pip python3-dev \
     wget vim nano git htop \
     sudo \
-    mtr iperf3 nload ncdu gnupg jq
+    mtr iperf3 nload ncdu gnupg jq \
+    iproute2
 
 ## link python
 RUN \
