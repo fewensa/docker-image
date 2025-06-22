@@ -16,6 +16,8 @@ ansible
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINFvM1upegm161AR3yKzLTx90b6e0UHtWdeJEBDfYRP+ ansible@anxio
 dokmana
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGMDqrKslP5bqf9NNfoQCvzKpnXFQ8FvdqIMI8EydPe dokploy
+coolia
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJe32WxuFcTNA5TkBK8BavwB8QoRcCmjE54/+OrKeT9d coolify-generated-ssh-key
 ---end
 '
 
