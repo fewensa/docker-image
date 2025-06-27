@@ -47,19 +47,20 @@ RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 COPY services.d /etc/services.d
 
 RUN \
-  rm -rf s6-overlay-noarch.tar.xz \
-  && rm -rf s6-overlay-x86_64.tar.xz
+  rm -rf /tmp/s6-overlay-noarch.tar.xz \
+  && rm -rf /tmp/s6-overlay-x86_64.tar.xz
 
 ## docker
-RUN curl -fsSL https://get.docker.com | sh && \
-  curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
-  chmod +x /usr/local/bin/docker-compose
+RUN \
+  curl -fsSL https://get.docker.com | sh \
+  && curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose \
+  && chmod +x /usr/local/bin/docker-compose
 
 ## ssh config
 RUN \
-  mkdir -p /run/sshd && \
-  echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
-  echo "PermitRootLogin prohibit-password" >> /etc/ssh/sshd_config
+  mkdir -p /run/sshd \
+  && echo "PasswordAuthentication no" >> /etc/ssh/sshd_config \
+  && echo "PermitRootLogin prohibit-password" >> /etc/ssh/sshd_config
 
 
 ## vscode
