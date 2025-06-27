@@ -6,6 +6,7 @@ ARG NVM_VERSION=0.40.3
 ARG NODE_VERSION=22.15.1
 ARG DOCKER_COMPOSE_VERSION=2.37.3
 ARG S6_OVERLAY_VERSION=3.2.1.0
+ARG GCM_VERSION=2.6.1
 #ARG JDK_VERSION=11.0.18
 
 SHELL ["/bin/bash", "-c"]
@@ -31,7 +32,6 @@ RUN \
 
 
 ## s6-overlay
-
 # RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" -o /tmp/s6-overlay-noarch.tar.xz || \
 #     (echo "Failed to download s6-overlay tarball!" && exit 1)
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
@@ -46,12 +46,14 @@ RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
 COPY services.d /etc/services.d
 
+RUN \
+  rm -rf s6-overlay-noarch.tar.xz \
+  && rm -rf s6-overlay-x86_64.tar.xz
 
 ## docker
 RUN curl -fsSL https://get.docker.com | sh && \
   curl -SL https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose && \
   chmod +x /usr/local/bin/docker-compose
-
 
 ## ssh config
 RUN \
@@ -61,12 +63,16 @@ RUN \
 
 
 ## vscode
-
 RUN \
   curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
   && tar -xzf /tmp/code.tar.gz -C /usr/local/bin \
   && rm -rf /tmp/code.tar.gz \
 
+## gcm
+RUN \
+  curl -Lk "https://github.com/git-ecosystem/git-credential-manager/releases/download/v${GCM_VERSION}/gcm-linux_amd64.${GCM_VERSION}.tar.gz" -o /tmp/gcm-linux.tar.gz \
+  && tar -xzf /tmp/gcm-linux.tar.gz -C /usr/local/bin \
+  && rm -rf /tmp/gcm-linux.tar.gz
 
 ## workdir
 RUN mkdir /code
