@@ -67,7 +67,7 @@ RUN \
 RUN \
   curl -Lk "https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64" -o /tmp/code.tar.gz \
   && tar -xzf /tmp/code.tar.gz -C /usr/local/bin \
-  && rm -rf /tmp/code.tar.gz \
+  && rm -rf /tmp/code.tar.gz
 
 ## gcm
 RUN \
