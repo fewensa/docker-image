@@ -18,8 +18,9 @@ jobs:
     strategy:
       matrix:
         package:
-          - appbox
-          - dev-toolchain
+          #- appbox
+          #- dev-toolchain
+          - gotenberg
           # - node-liveness-probe
           # - terraform
           # - artelad
@@ -58,6 +59,14 @@ jobs:
           tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/dev-toolchain:sha-${{ env.SHA }}
           build-args: |
             HOST_PASSWORD=${{ secrets.TOOLCHAIN_PASSWORD_HOST }}
+
+      - name: Gotenberg
+        uses: docker/build-push-action@v3
+        if: ${{ matrix.package == 'gotenberg' }}
+        with:
+          push: true
+          context: images/gotenberg
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/gotenberg:sha-${{ env.SHA }}
 
       - name: Node liveness probe
         uses: docker/build-push-action@v3
