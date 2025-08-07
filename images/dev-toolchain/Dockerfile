@@ -1,4 +1,40 @@
-FROM ubuntu:24.04
+ARG KUBECTL_VERSION=1.33.3
+ARG HELMFILE_VERSION=1.1.3-3.18.4
+
+##
+# Kubectl
+##
+FROM bitnami/kubectl:${KUBECTL_VERSION} AS kubectl
+
+##
+# Kustomize
+##
+FROM buildpack-deps:stable-curl AS kustomize
+ARG KUSTOMIZE_VERSION=v5.7.1
+RUN curl -LO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
+RUN tar xzvf ./kustomize_v*_linux_amd64.tar.gz
+
+
+##
+# Helm
+##
+FROM buildpack-deps:stable-curl AS helm
+ARG HELM_VERSION=v3.18.0
+ARG HELM_FILENAME="helm-${HELM_VERSION}-linux-amd64.tar.gz"
+RUN wget "https://get.helm.sh/${HELM_FILENAME}"
+RUN tar zxvf ./${HELM_FILENAME}
+
+##
+# Helmfile
+##
+#FROM quay.io/roboll/helmfile:${HELMFILE_VERSION} as helmfile
+FROM chatwork/helmfile:${HELMFILE_VERSION} AS helmfile
+
+
+##
+# MAIN STAGE
+##
+FROM ubuntu:24.04 AS runner
 
 # ARG HOST_PASSWORD=password
 ARG FLUTTER_VERSION=3.29.3
@@ -11,6 +47,17 @@ ARG GCM_VERSION=2.6.1
 
 SHELL ["/bin/bash", "-c"]
 
+
+# Kubectl
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/
+# Kustomize
+COPY --from=kustomize ./kustomize /usr/local/bin/
+# Helm
+COPY --from=helm ./linux-amd64/helm /usr/local/bin/
+# Helmfile
+COPY --from=helmfile /usr/local/bin/helmfile /usr/local/bin/
+
+
 ## unminimize
 RUN yes | unminimize
 
@@ -22,15 +69,18 @@ RUN \
     openssh-server ncdu \
     wget vim nano git htop \
     build-essential libssl-dev pkg-config \
-    clang make gcc g++ protobuf-compiler make \
+    clang make gcc g++ protobuf-compiler \
     ninja-build libgtk-3-dev \
     python3-pip python3-dev \
-    gnupg pass
+    gnupg pass \
+    colordiff moreutils
 
 ## link python
 RUN \
   ln -s /usr/bin/python3 /usr/bin/python
 
+## helm-diff
+RUN helm plugin install https://github.com/databus23/helm-diff --version v3.12.4
 
 ## s6-overlay
 # RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" -o /tmp/s6-overlay-noarch.tar.xz || \
