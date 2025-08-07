@@ -19,8 +19,8 @@ jobs:
       matrix:
         package:
           #- appbox
-          #- dev-toolchain
-          - gotenberg
+          - dev-toolchain
+          #- gotenberg
           # - node-liveness-probe
           # - terraform
           # - artelad
