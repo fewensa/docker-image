@@ -9,8 +9,9 @@ env:
   DOCKER_REGISTRY: ghcr.io
 
 jobs:
-  build-docker-image:
-    name: Build docker image
+
+  build-stage-one:
+    name: Build Stage One
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -22,16 +23,6 @@ jobs:
             build-args: |
               DOCKER_COMPOSE_VERSION=2.39.2
               S6_OVERLAY_VERSION=3.2.1.0
-          - package: dev-toolchain
-            context: images/dev-toolchain
-            build-args: |
-              FLUTTER_VERSION=3.29.3
-              NVM_VERSION=0.40.3
-              NODE_VERSION=22.15.1
-              DOCKER_COMPOSE_VERSION=2.39.2
-              S6_OVERLAY_VERSION=3.2.1.0
-              GCM_VERSION=2.6.1
-              HELM_DIFF_VERSION=v3.1.3
           - package: gotenberg
             context: images/gotenberg
             build-args: ""
@@ -89,3 +80,49 @@ jobs:
             ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:sha-${{ env.SHA }}
             ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:latest
           build-args: ${{ matrix.build-args }}
+
+  build-stage-two:
+    name: Build Stage Two
+    runs-on: ubuntu-latest
+    needs:
+      - build-stage-one
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - package: dev-toolchain
+            context: images/dev-toolchain
+            build-args: |
+              FLUTTER_VERSION=3.29.3
+              NVM_VERSION=0.40.3
+              NODE_VERSION=22.15.1
+              DOCKER_COMPOSE_VERSION=2.39.2
+              S6_OVERLAY_VERSION=3.2.1.0
+              GCM_VERSION=2.6.1
+              HELM_DIFF_VERSION=v3.1.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: benjlevesque/short-sha@v3.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.DOCKER_REGISTRY }}
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: ${{ matrix.context }}
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:sha-${{ env.SHA }}
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:latest
+          build-args: ${{ matrix.build-args }}
+
