@@ -1,35 +1,4 @@
-ARG KUBECTL_VERSION=1.33.3
-ARG HELMFILE_VERSION=1.1.3-3.18.4
-
-##
-# Kubectl
-##
-FROM bitnami/kubectl:${KUBECTL_VERSION} AS kubectl
-
-##
-# Kustomize
-##
-FROM buildpack-deps:stable-curl AS kustomize
-ARG KUSTOMIZE_VERSION=v5.7.1
-RUN curl -LO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
-RUN tar xzvf ./kustomize_v*_linux_amd64.tar.gz
-
-
-##
-# Helm
-##
-FROM buildpack-deps:stable-curl AS helm
-ARG HELM_VERSION=v3.18.0
-ARG HELM_FILENAME="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-RUN wget "https://get.helm.sh/${HELM_FILENAME}"
-RUN tar zxvf ./${HELM_FILENAME}
-
-##
-# Helmfile
-##
-#FROM quay.io/roboll/helmfile:${HELMFILE_VERSION} as helmfile
-FROM chatwork/helmfile:${HELMFILE_VERSION} AS helmfile
-
+FROM ghcr.io/fewensa/docker-image/k8ops:latest AS k8ops
 
 ##
 # MAIN STAGE
@@ -43,20 +12,19 @@ ARG NODE_VERSION=22.15.1
 ARG DOCKER_COMPOSE_VERSION=2.37.3
 ARG S6_OVERLAY_VERSION=3.2.1.0
 ARG GCM_VERSION=2.6.1
+ARG HELM_DIFF_VERSION=v3.1.3
 #ARG JDK_VERSION=11.0.18
 
 SHELL ["/bin/bash", "-c"]
 
-
 # Kubectl
-COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/
+COPY --from=k8ops /usr/local/bin/kubectl /usr/local/bin/
 # Kustomize
-COPY --from=kustomize ./kustomize /usr/local/bin/
+COPY --from=k8ops /usr/local/bin/kustomize /usr/local/bin/
 # Helm
-COPY --from=helm ./linux-amd64/helm /usr/local/bin/
+COPY --from=k8ops /usr/local/bin/helm /usr/local/bin/
 # Helmfile
-COPY --from=helmfile /usr/local/bin/helmfile /usr/local/bin/
-
+COPY --from=k8ops /usr/local/bin/helmfile /usr/local/bin/
 
 ## unminimize
 RUN yes | unminimize
@@ -80,7 +48,7 @@ RUN \
   ln -s /usr/bin/python3 /usr/bin/python
 
 ## helm-diff
-RUN helm plugin install https://github.com/databus23/helm-diff --version v3.12.4
+RUN helm plugin install https://github.com/databus23/helm-diff --version=${HELM_DIFF_VERSION}
 
 ## s6-overlay
 # RUN curl -fSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" -o /tmp/s6-overlay-noarch.tar.xz || \
@@ -126,17 +94,6 @@ RUN \
   && tar -xzf /tmp/gcm-linux.tar.gz -C /usr/local/bin \
   && rm -rf /tmp/gcm-linux.tar.gz
 
-## workdir
-RUN mkdir /code
-WORKDIR /code
-
-# RUN \
-#   apt-get install --no-install-recommends -y sudo \
-#   usermod -aG sudo ubuntu && \
-#   echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
-
-# USER ubuntu
-
 
 ### rust
 #RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
@@ -175,6 +132,18 @@ WORKDIR /code
 # ENTRYPOINT "/entrypoint.sh"
 
 # ENV VSCODE_TUNNEL_NAME="pow-dev"
+
+
+# RUN \
+#   apt-get install --no-install-recommends -y sudo \
+#   usermod -aG sudo ubuntu && \
+#   echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
+
+# USER ubuntu
+
+## workdir
+RUN mkdir /code
+WORKDIR /code
 
 ENTRYPOINT ["/init"]
 
