@@ -5,7 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-
 env:
   DOCKER_REGISTRY: ghcr.io
 
@@ -17,111 +16,70 @@ jobs:
       packages: write
     strategy:
       matrix:
-        package:
-          #- appbox
-          - dev-toolchain
-          #- gotenberg
-          # - node-liveness-probe
-          # - terraform
-          # - artelad
-          # - fuel
-          # - nubit
-          # - harmonytools
+        include:
+          - package: appbox
+            context: images/appbox
+            build-args: |
+              DOCKER_COMPOSE_VERSION=2.37.3
+              S6_OVERLAY_VERSION=3.2.1.0
+          - package: dev-toolchain
+            context: images/dev-toolchain
+            build-args: |
+              KUBECTL_VERSION=1.33.3
+              HELMFILE_VERSION=1.1.3-3.18.4
+              KUSTOMIZE_VERSION=v5.7.1
+              HELM_VERSION=v3.18.0
+              FLUTTER_VERSION=3.29.3
+              NVM_VERSION=0.40.3
+              NODE_VERSION=22.15.1
+              DOCKER_COMPOSE_VERSION=2.37.3
+              S6_OVERLAY_VERSION=3.2.1.0
+              GCM_VERSION=2.6.1
+          - package: gotenberg
+            context: images/gotenberg
+            build-args: ""
+          - package: node-liveness-probe
+            context: images/node-liveness-probe
+            build-args: |
+              NODE_LIVENESS_PROBE_VERSION=v0.6.1
+          - package: terraform
+            context: images/terraform
+            build-args: |
+              TERRAFORM_VERSION=1.4.6
+              TERRAFORM_BACKEND_GIT_VERSION=v0.1.8
+          # - package: artelad
+          #   context: images/artelad
+          #   build-args: ""
+          # - package: fuel
+          #   context: images/fuel
+          #   build-args: ""
+          # - package: nubit
+          #   context: images/nubit
+          #   build-args: ""
+          # - package: harmonytools
+          #   context: images/harmonytools
+          #   build-args: ""
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: benjlevesque/short-sha@v1.2
+      - uses: benjlevesque/short-sha@v3.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Docker login
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ${{ env.DOCKER_REGISTRY }}
 
-      - name: Appbox
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'appbox' }}
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v6
         with:
           push: true
-          context: images/appbox
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/appbox:sha-${{ env.SHA }}
-
-      - name: Dev toolchain
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'dev-toolchain' }}
-        with:
-          push: true
-          context: images/dev-toolchain
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/dev-toolchain:sha-${{ env.SHA }}
-          build-args: |
-            HOST_PASSWORD=${{ secrets.TOOLCHAIN_PASSWORD_HOST }}
-
-      - name: Gotenberg
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'gotenberg' }}
-        with:
-          push: true
-          context: images/gotenberg
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/gotenberg:sha-${{ env.SHA }}
-
-      - name: Node liveness probe
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'node-liveness-probe' }}
-        with:
-          push: true
-          context: images/node-liveness-probe
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/node-liveness-probe:sha-${{ env.SHA }}
-          build-args: |
-            NODE_LIVENESS_PROBE_VERSION=v0.6.1
-            FLUTTER_VERSION=3.3.0
-            NVM_VERSION=0.39.3
-            NODE_VERSION=18.14.2
-
-      - name: Terraform
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'terraform' }}
-        with:
-          push: true
-          context: images/terraform
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/terraform:sha-${{ env.SHA }}
-          build-args: |
-            TERRAFORM_VERSION=1.4.6
-            TERRAFORM_BACKEND_GIT_VERSION=v0.1.4
-
-      - name: Artelad
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'artelad' }}
-        with:
-          push: true
-          context: images/artelad
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/artelad:sha-${{ env.SHA }}
-
-      - name: Fuel
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'fuel' }}
-        with:
-          push: true
-          context: images/fuel
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/fuel:sha-${{ env.SHA }}
-
-      - name: Nubit
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'nubit' }}
-        with:
-          push: true
-          context: images/nubit
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/nubit:sha-${{ env.SHA }}
-
-      - name: Harmonytools
-        uses: docker/build-push-action@v3
-        if: ${{ matrix.package == 'harmonytools' }}
-        with:
-          push: true
-          context: images/harmonytools
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/harmonytools:sha-${{ env.SHA }}
-
-
+          context: ${{ matrix.context }}
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:sha-${{ env.SHA }}
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.package }}:latest
+          build-args: ${{ matrix.build-args }}
