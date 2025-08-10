@@ -4,12 +4,12 @@ ARG HELMFILE_VERSION
 ##
 # Kubectl
 ##
-FROM bitnami/kubectl:${KUBECTL_VERSION} as kubectl
+FROM bitnami/kubectl:${KUBECTL_VERSION} AS kubectl
 
 ##
 # Kustomize
 ##
-FROM buildpack-deps:stable-curl as kustomize
+FROM buildpack-deps:stable-curl AS kustomize
 ARG KUSTOMIZE_VERSION
 RUN curl -LO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
 RUN tar xzvf ./kustomize_v*_linux_amd64.tar.gz
@@ -17,7 +17,7 @@ RUN tar xzvf ./kustomize_v*_linux_amd64.tar.gz
 ##
 # Helm
 ##
-FROM buildpack-deps:stable-curl as helm
+FROM buildpack-deps:stable-curl AS helm
 ARG HELM_VERSION
 ARG HELM_FILENAME="helm-${HELM_VERSION}-linux-amd64.tar.gz"
 RUN wget "https://get.helm.sh/${HELM_FILENAME}"
@@ -26,8 +26,8 @@ RUN tar zxvf ./${HELM_FILENAME}
 ##
 # Helmfile
 ##
-#FROM quay.io/roboll/helmfile:${HELMFILE_VERSION} as helmfile
-FROM chatwork/helmfile:${HELMFILE_VERSION} as helmfile
+#FROM quay.io/roboll/helmfile:${HELMFILE_VERSION} AS helmfile
+FROM chatwork/helmfile:${HELMFILE_VERSION} AS helmfile
 
 ##
 # MAIN STAGE
