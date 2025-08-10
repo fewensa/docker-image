@@ -18,11 +18,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - package: appbox
-            context: images/appbox
-            build-args: |
-              DOCKER_COMPOSE_VERSION=2.39.2
-              S6_OVERLAY_VERSION=3.2.1.0
           - package: gotenberg
             context: images/gotenberg
             build-args: ""
@@ -91,6 +86,11 @@ jobs:
     strategy:
       matrix:
         include:
+          - package: appbox
+            context: images/appbox
+            build-args: |
+              DOCKER_COMPOSE_VERSION=2.39.2
+              S6_OVERLAY_VERSION=3.2.1.0
           - package: dev-toolchain
             context: images/dev-toolchain
             build-args: |
