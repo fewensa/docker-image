@@ -38,8 +38,8 @@ jobs:
             SYNCED["$key"]="$val"
           done < "$CHECKPOINT"
 
-          # Only check the 5 most recent version tags
-          VERSION_TAGS=$(crane ls "$UPSTREAM" | grep -E '^[0-9]{4}\.' | sort -V | tail -5)
+          # Only check the 15 most recent version tags
+          VERSION_TAGS=$(crane ls "$UPSTREAM" | grep -E '^[0-9]{4}\.' | sort -V | tail -15)
 
           # Always check latest explicitly (crane ls may not include it)
           TAGS_TO_CHECK=$(printf "%s\nlatest" "$VERSION_TAGS")
