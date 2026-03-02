@@ -38,23 +38,29 @@ jobs:
             SYNCED["$key"]="$val"
           done < "$CHECKPOINT"
 
+          # Only check the 5 most recent version tags
+          VERSION_TAGS=$(crane ls "$UPSTREAM" | grep -E '^[0-9]{4}\.' | sort -V | tail -5)
+
+          # Always check latest explicitly (crane ls may not include it)
+          TAGS_TO_CHECK=$(printf "%s\nlatest" "$VERSION_TAGS")
+
           while IFS= read -r tag; do
+            [ -z "$tag" ] && continue
             DIGEST=""
+
             if [[ "$tag" =~ ^[0-9]{4}\. ]]; then
               [ "${SYNCED[$tag]+_}" ] && continue
               DIGEST=$(crane digest "$UPSTREAM:$tag" 2>/dev/null || true)
             elif [ "$tag" = "latest" ]; then
               DIGEST=$(crane digest "$UPSTREAM:latest" 2>/dev/null || true)
               [ "${SYNCED[latest]}" = "$DIGEST" ] && continue
-            else
-              continue
             fi
 
             [ -z "$DIGEST" ] && continue
             MATRIX=$(echo "$MATRIX" | jq -c \
               --arg tag "$tag" --arg digest "$DIGEST" \
               '. += [{"tag": $tag, "digest": $digest}]')
-          done <<< "$(crane ls "$UPSTREAM" | grep -E '^[0-9]{4}\.|^latest$')"
+          done <<< "$TAGS_TO_CHECK"
 
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
