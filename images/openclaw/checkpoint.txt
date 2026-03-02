@@ -1,0 +1,5 @@
+# OpenClaw sync checkpoint
+# Format:
+#   VERSION=synced    (version tags already synced, skip on next run)
+#   latest=DIGEST     (latest tag, rebuild when digest changes)
+2026.3.1=synced
