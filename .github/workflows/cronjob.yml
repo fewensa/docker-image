@@ -1,8 +1,8 @@
-name: Sync OpenClaw
+name: Cronjob
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -142,5 +142,3 @@ jobs:
         with:
           commit_message: "chore(openclaw): update sync checkpoint"
           file_pattern: images/openclaw/checkpoint.txt
-
-
