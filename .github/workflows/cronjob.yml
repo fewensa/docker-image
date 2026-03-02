@@ -51,7 +51,7 @@ jobs:
             fi
 
             [ -z "$DIGEST" ] && continue
-            MATRIX=$(echo "$MATRIX" | jq \
+            MATRIX=$(echo "$MATRIX" | jq -c \
               --arg tag "$tag" --arg digest "$DIGEST" \
               '. += [{"tag": $tag, "digest": $digest}]')
           done <<< "$(crane ls "$UPSTREAM" | grep -E '^[0-9]{4}\.|^latest$')"
