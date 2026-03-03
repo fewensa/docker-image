@@ -88,11 +88,24 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
+      - name: Detect platform
+        id: platform
+        run: |
+          TAG="${{ matrix.tag }}"
+          if [[ "$TAG" == *-arm64* ]]; then
+            echo "platform=linux/arm64" >> $GITHUB_OUTPUT
+          elif [[ "$TAG" == *-amd64* ]]; then
+            echo "platform=linux/amd64" >> $GITHUB_OUTPUT
+          else
+            echo "platform=linux/amd64" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build & Push
         uses: docker/build-push-action@v6
         with:
           push: true
           context: images/openclaw
+          platforms: ${{ steps.platform.outputs.platform }}
           build-args: |
             UPSTREAM_TAG=${{ matrix.tag }}
             UPSTREAM_DIGEST=${{ matrix.digest }}
