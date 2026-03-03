@@ -2,3 +2,24 @@
 # Format:
 #   VERSION=synced    (version tags already synced, skip on next run)
 #   latest=DIGEST     (latest tag, rebuild when digest changes)
+2026.2.24-beta.1-amd64=synced
+2026.2.24-beta.1-arm64=synced
+2026.2.25=synced
+2026.2.25-amd64=synced
+2026.2.25-arm64=synced
+2026.2.25-beta.1=synced
+2026.2.25-beta.1-amd64=synced
+2026.2.25-beta.1-arm64=synced
+2026.2.26=synced
+2026.2.26-amd64=synced
+2026.2.26-arm64=synced
+2026.2.26-beta.1=synced
+2026.2.26-beta.1-amd64=synced
+2026.2.26-beta.1-arm64=synced
+2026.3.1=synced
+2026.3.1-amd64=synced
+2026.3.1-arm64=synced
+2026.3.1-beta.1=synced
+2026.3.1-beta.1-amd64=synced
+2026.3.1-beta.1-arm64=synced
+latest=sha256:dcf11a3a97a9b0e42dd41fcd4891533e77ff72e7b0380c743177bfbfd6f38b2d
