@@ -22,7 +22,7 @@
 2026.3.1-beta.1=synced
 2026.3.1-beta.1-amd64=synced
 2026.3.1-beta.1-arm64=synced
-latest=sha256:5fa1a4cdcc18d0e054f5e788289fa64c45f43899e2a7db5802ce0032815905d8
+latest=sha256:c312f4a43cb7df588c14bdd6a726920d47138eb7fe4e2cf140a50a71d11b70bc
 2026.3.2=synced
 2026.3.2-amd64=synced
 2026.3.2-arm64=synced
