@@ -22,7 +22,7 @@
 2026.3.1-beta.1=synced
 2026.3.1-beta.1-amd64=synced
 2026.3.1-beta.1-arm64=synced
-latest=sha256:1af3f457a2d5a1d210f4d95634fa5da6e23f9c0ac7b52ef4bc38e2ecf09704fd
+latest=sha256:e2482a66682de6f540dcfd9921e410c23fd060dcd441382ff952247ee911a672
 2026.3.2=synced
 2026.3.2-amd64=synced
 2026.3.2-arm64=synced
@@ -700,3 +700,6 @@ latest=sha256:1af3f457a2d5a1d210f4d95634fa5da6e23f9c0ac7b52ef4bc38e2ecf09704fd
 2026.5.12-beta.8-slim=synced
 2026.5.12-beta.8-slim-amd64=synced
 2026.5.12-beta.8-slim-arm64=synced
+2026.5.12-slim=synced
+2026.5.12-slim-amd64=synced
+2026.5.12-slim-arm64=synced
