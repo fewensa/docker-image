@@ -804,3 +804,7 @@ latest=sha256:8ecbd44d788db7048108a712802a98fad3f1f9a8a87f78fb111dc3fd0f8a9ed7
 2026.5.20-beta.1-slim=synced
 2026.5.20-beta.1-slim-amd64=synced
 2026.5.20-beta.1-slim-arm64=synced
+2026.5.20-beta.2-amd64=synced
+2026.5.20-beta.2-arm64=synced
+2026.5.20-beta.2-slim-amd64=synced
+2026.5.20-beta.2-slim-arm64=synced
