@@ -918,3 +918,6 @@ latest=sha256:95f4e860a1490e6e83f095d0bb1d2b5c7ac74e1cb62eedad08deb179e831a6de
 2026.5.28-alpha.1-browser-arm64=synced
 2026.5.28-alpha.1-slim-amd64=synced
 2026.5.28-alpha.1-slim-arm64=synced
+2026.5.28-alpha.1=synced
+2026.5.28-alpha.1-browser=synced
+2026.5.28-alpha.1-slim=synced
