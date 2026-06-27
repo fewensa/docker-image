@@ -1280,3 +1280,4 @@ latest=sha256:af7ea052cf216f581fb18fabada01552356c53717461c0399b623cba7ecad4b1
 2026.6.11-beta.1-slim-amd64=synced
 2026.6.11-beta.1-slim-arm64=synced
 2026.6.10-main-14e2e10794=synced
+2026.6.10-main-d7f4cd6a03=synced
